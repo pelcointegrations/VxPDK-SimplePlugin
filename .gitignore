@@ -4,3 +4,4 @@
 /Plugin/obj
 *.opendb
 *.db
+*.suo
