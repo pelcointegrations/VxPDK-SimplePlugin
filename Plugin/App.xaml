@@ -1,0 +1,21 @@
+﻿<Application x:Class="PluginNs.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PluginNs">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--
+                These must be in a specific order: Resource dictionaries that are listed lower will not be accessible by higher up resource dictionaries.
+                For example, Colors.xaml must be at the top of the list so the rest of the resource dictionaries can access its colors, etc...
+                -->
+                <ResourceDictionary Source="/Plugin;component/Resources/Constants.xaml" />
+                <ResourceDictionary Source="/Plugin;component/Resources/Colors.xaml" />
+                <ResourceDictionary Source="/Plugin;component/Resources/UXGGlobalStyles.xaml" />
+                <ResourceDictionary Source="/Plugin;component/Resources/GlobalStyles.xaml" />
+                <ResourceDictionary Source="/Plugin;component/Resources/PluginMasterStyles.xaml" />
+                <ResourceDictionary Source="/Plugin;component/Resources/DateTimeUpDownStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

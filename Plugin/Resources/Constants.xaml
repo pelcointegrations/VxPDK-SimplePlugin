@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:String x:Key="DefaultAssemblyName">OpsCenter</sys:String>
+
+    <FontFamily x:Key="StandardFontFamily">Arial</FontFamily>
+
+    <sys:Double x:Key="PrimeWidth">395</sys:Double>
+    <sys:Double x:Key="PrimePopupMenuWidth">381.6</sys:Double>
+    <sys:Double x:Key="PrimeSubPopupMenuWidth">368</sys:Double>
+    <sys:Double x:Key="SourceListTooltipWidth">350</sys:Double>
+
+    <!--Dimensions defined in Cheat Sheet Design Specs-->
+    <sys:Double x:Key="FooterButtonSize">15</sys:Double>
+    <sys:Double x:Key="TabFooterButtonSize">22</sys:Double>
+
+    <sys:Double x:Key="HeaderFontSize">14</sys:Double>
+
+    <!--FONT 15px is base font size across whole app which is 150% of 10 older font size-->
+
+    <sys:Double x:Key="BasePlus3FontSize">18</sys:Double>
+    <sys:Double x:Key="BasePlus1FontSize">16</sys:Double>
+    <sys:Double x:Key="BaseFontSize">15</sys:Double>
+    <sys:Double x:Key="BaseMinus2FontSize">13</sys:Double>
+    <sys:Double x:Key="BaseMinus3FontSize">12</sys:Double>
+    <sys:Double x:Key="BaseMinus4FontSize">11</sys:Double>
+    <sys:Double x:Key="BaseMinus5FontSize">10</sys:Double>
+
+    <!--Cell Status Indicators Thickness-->
+    <Thickness x:Key="CellStatusBorderThickness">3</Thickness>
+    <Thickness x:Key="CellDefaultBorderThickness">1</Thickness>
+
+    <sys:Double x:Key="AlertsFooterIconHeight">20</sys:Double>
+    <sys:Double x:Key="AlertsFooterPopupWidth">390</sys:Double>
+    <sys:Double x:Key="WindowFooterHeight">30</sys:Double>
+    <sys:Double x:Key="WindowHeaderHeight">40</sys:Double>
+    <sys:Double x:Key="PrimeWindowMinHeight">500</sys:Double>
+    <sys:Double x:Key="TabWindowMinHeight">500</sys:Double>
+    <sys:Double x:Key="CellTopBarHeight">30</sys:Double>
+    <sys:Double x:Key="CellBottomBarHeight">30</sys:Double>
+</ResourceDictionary>

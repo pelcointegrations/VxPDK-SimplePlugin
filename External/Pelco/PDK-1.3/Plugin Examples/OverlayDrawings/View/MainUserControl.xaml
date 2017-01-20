@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="OverlayDrawings.View.MainUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:views="clr-namespace:OverlayDrawings.View"
+             xmlns:models="clr-namespace:OverlayDrawings.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="450"
+             ScrollViewer.CanContentScroll="True"
+             ScrollViewer.VerticalScrollBarVisibility="Auto"
+             ScrollViewer.HorizontalScrollBarVisibility="Auto">
+
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type models:NewLineViewModel}">
+            <views:NewLineView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type models:NewRectangleViewModel}">
+            <views:NewRectangleView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type models:NewEllipseViewModel}">
+            <views:NewEllipseView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type models:NewPolygonViewModel}">
+            <views:NewPolygonView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type models:NewTextBoxViewModel}">
+            <views:NewTextBoxView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type models:AllOverlaysViewModel}">
+            <views:AllOverlaysView/>
+        </DataTemplate>
+        <DataTemplate x:Key="CommandsTemplate">
+            <ItemsControl IsTabStop="False" ItemsSource="{Binding}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Margin="30,5,5,5" HorizontalAlignment="Left">
+                            <Hyperlink Command="{Binding Path=Command}">
+                                <TextBlock Text="{Binding Path=DisplayName}"/>
+                            </Hyperlink>
+                        </TextBlock>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid VerticalAlignment="Top">
+        <StackPanel ScrollViewer.CanContentScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <GroupBox Background="Azure" BorderBrush="CadetBlue" Foreground="DarkSlateBlue" FontWeight="Bold" Header="Actions" Margin="10">
+                <ContentControl Content="{Binding Path=Commands}" ContentTemplate="{StaticResource CommandsTemplate}"/>
+            </GroupBox>
+            <Separator BorderBrush="DarkSlateBlue" BorderThickness="3" Height="Auto" Margin="5,5,5,0" />
+
+            <GroupBox Header="{Binding Path=DisplayName}" FontSize="14" FontWeight="Bold" Foreground="DarkSlateBlue" BorderBrush="CadetBlue" Background="Azure" Margin="10">
+                <!-- Allows us to dynamically swap out the content when updating the View-->
+                <ContentControl Content="{Binding Path=CurrentViewModel}"/>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,6 @@
+/External/NuGet
+/External/Pelco/VxSdk-1.2/CSharpWrapper/Bin
+/Plugin/bin
+/Plugin/obj
+*.opendb
+*.db

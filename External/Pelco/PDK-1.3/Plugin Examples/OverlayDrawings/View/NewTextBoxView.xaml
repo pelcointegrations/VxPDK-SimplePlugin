@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="OverlayDrawings.View.NewTextBoxView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:OverlayDrawings"
+             mc:Ignorable="d" Height="Auto" Width="Auto" Background="White">
+    <StackPanel>
+        <GroupBox FontWeight="Medium" Header="Box" Margin="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <GroupBox x:Name="UpperLeftPointGroup" FontWeight="Medium" Header="Upper Left Corner" BorderThickness="0.6" Margin="5,20,5,5" Width="Auto" Height="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label ToolTip="The % from the left side of the drawing area to place the upper left corner" FontWeight="Normal" Content="Left:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=Left, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label ToolTip="The % from the top of the drawing area to place the upper left corner" Content="Top:" FontWeight="Normal" HorizontalAlignment="Right" Grid.Row="1" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=Top, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </GroupBox>
+                <GroupBox FontWeight="Medium" Header="Bottom Right Corner" BorderThickness="0.6" Margin="5,5,5,5" Grid.Row="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label ToolTip="The % from the left side of the drawing area to place the bottom right corner" Content="Right:" FontWeight="Normal" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=Right, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label ToolTip="The % from the top of the drawing area to place the bottom right corner" Content="Bottom:" FontWeight="Normal" HorizontalAlignment="Right" Grid.Row="1" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" Text="{Binding Path=Bottom, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </GroupBox>
+                <Grid Grid.Row="2" Margin="5,10,0,5" HorizontalAlignment="Right">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="260"/>
+                    </Grid.ColumnDefinitions>
+                    <Label ToolTip="Color of the line" FontWeight="Normal" Content="Border Color:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <xctk:ColorPicker Grid.Column="1" Margin="5,5,5,5" SelectedColor="{Binding Path=BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label ToolTip="Color to fill the rectangle" Grid.Row="1" FontWeight="Normal" Content="Fill Color:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <xctk:ColorPicker Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" SelectedColor="{Binding Path=FillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </Grid>
+        </GroupBox>
+        <GroupBox FontWeight="Medium" Header="Text" Margin="5" Padding="0,15, 0, 0">
+            <Grid HorizontalAlignment="Right">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="260"/>
+                </Grid.ColumnDefinitions>
+                <Label ToolTip="The TextBox's text message" FontWeight="Normal" Content="Text:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox VerticalAlignment="Center" Margin="5,5,5,5" Grid.Column="1" Text="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="1" ToolTip="The fontsize of the text" FontWeight="Normal" Content="FontSize:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" VerticalAlignment="Center" Margin="5,5,5,5" Grid.Column="1" Text="{Binding Path=FontSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="2" ToolTip="The horizontal alignment of the text" FontWeight="Normal" Content="H Alignment:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" Margin="5,5,5,5" ItemsSource="{Binding Path=AvailableH_Alignments, Mode=OneWay}" SelectedValue="{Binding SelectedHAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="3" ToolTip="The vertical alignment of the text" FontWeight="Normal" Content="V Alignment:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="3" Grid.Column="1" Margin="5,5,5,5" ItemsSource="{Binding Path=AvailableV_Alignments, Mode=OneWay}" SelectedValue="{Binding SelectedVAlignment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="4" ToolTip="Text wrapping configuration" FontWeight="Normal" Content="Wrap Text:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="4" Grid.Column="1" Margin="5,5,5,5" ItemsSource="{Binding Path=AvailableWrapping, Mode=OneWay}" SelectedValue="{Binding SelectedTextWrapping, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <CheckBox Grid.Row="5" Grid.Column="2" Content="Animate" HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding Path=Animate, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Grid.Row="5" Grid.ColumnSpan="2" Content="Draw" BorderBrush="DarkSlateBlue" Padding="3" Margin="5" HorizontalAlignment="Right" Command="{Binding Path=DrawCommand}"/>
+            </Grid>
+        </GroupBox>
+    </StackPanel>
+</UserControl>
