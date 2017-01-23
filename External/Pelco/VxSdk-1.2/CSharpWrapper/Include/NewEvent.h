@@ -65,8 +65,8 @@ namespace CPPCli {
 
                 for (int i = 0; i < _newEvent->propertySize; i++)
                 {
-                    strncpy_s(_newEvent->properties[i].key, Utils::ConvertSysString(value[i].Key), sizeof(_newEvent->properties[i].key));
-                    strncpy_s(_newEvent->properties[i].value, Utils::ConvertSysString(value[i].Value), sizeof(_newEvent->properties[i].value));
+					VxSdk::Utilities::StrCopySafe(_newEvent->properties[i].key, Utils::ConvertSysString(value[i].Key));
+					VxSdk::Utilities::StrCopySafe(_newEvent->properties[i].value, Utils::ConvertSysString(value[i].Value));
                 }
             }
         }

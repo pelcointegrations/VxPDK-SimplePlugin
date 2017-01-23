@@ -90,7 +90,7 @@ namespace CPPCli {
             System::String^ get() { return gcnew System::String(_user->domain); }
             void set(System::String^ value) {
                 char domain[64];
-                strncpy_s(domain, Utils::ConvertSysStringNonConst(value), sizeof(domain));
+				VxSdk::Utilities::StrCopySafe(domain, Utils::ConvertSysStringNonConst(value));
                 _user->SetName(domain);
             }
         }
@@ -113,7 +113,7 @@ namespace CPPCli {
             System::String^ get() { return gcnew System::String(_user->name); }
             void set(System::String^ value) {
                 char name[64];
-                strncpy_s(name, Utils::ConvertSysStringNonConst(value), sizeof(name));
+				VxSdk::Utilities::StrCopySafe(name, Utils::ConvertSysStringNonConst(value));
                 _user->SetName(name);
             }
         }

@@ -47,7 +47,7 @@ namespace CPPCli {
             System::String^ get() { return gcnew System::String(_bookmark->description); }
             void set(System::String^ value) {
                 char description[64];
-                strncpy_s(description, Utils::ConvertSysStringNonConst(value), sizeof(description));
+				VxSdk::Utilities::StrCopySafe(description, Utils::ConvertSysStringNonConst(value));
                 _bookmark->SetDescription(description);
             }
         }

@@ -22,7 +22,7 @@ namespace CPPCli {
 
             /// <summary>A VideoXpert Core device.</summary>
             Core,
-            
+
             /// <summary>A VideoXpert Core/MediaGateway device.</summary>
             CoreMg,
 
@@ -46,10 +46,10 @@ namespace CPPCli {
 
             /// <summary>A network storage device.</summary>
             Recorder,
-            
+
             /// <summary>A UDI device.</summary>
             Udi,
-            
+
             /// <summary>A UI device.</summary>
             Ui,
 
@@ -165,7 +165,7 @@ namespace CPPCli {
             System::String^ get() { return gcnew System::String(_device->name); }
             void set(System::String^ value) {
                 char name[64];
-                strncpy_s(name, Utils::ConvertSysStringNonConst(value), sizeof(name));
+				VxSdk::Utilities::StrCopySafe(name, Utils::ConvertSysStringNonConst(value));
                 _device->SetName(name);
             }
         }
@@ -178,7 +178,7 @@ namespace CPPCli {
         public:
             void set(System::String^ value) {
                 char password[64];
-                strncpy_s(password, Utils::ConvertSysStringNonConst(value), sizeof(password));
+				VxSdk::Utilities::StrCopySafe(password, Utils::ConvertSysStringNonConst(value));
                 _device->SetPassword(password);
             }
         }
@@ -219,7 +219,7 @@ namespace CPPCli {
             System::String^ get() { return gcnew System::String(_device->username); }
             void set(System::String^ value) {
                 char username[64];
-                strncpy_s(username, Utils::ConvertSysStringNonConst(value), sizeof(username));
+				VxSdk::Utilities::StrCopySafe(username, Utils::ConvertSysStringNonConst(value));
                 _device->SetUsername(username);
             }
         }

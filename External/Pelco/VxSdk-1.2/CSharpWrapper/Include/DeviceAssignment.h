@@ -79,7 +79,7 @@ namespace CPPCli {
             System::String^ get() { return gcnew System::String(_deviceAssignment->driverType); }
             void set(System::String^ value) {
                 char driverType[64];
-                strncpy_s(driverType, Utils::ConvertSysStringNonConst(value), sizeof(driverType));
+				VxSdk::Utilities::StrCopySafe(driverType, Utils::ConvertSysStringNonConst(value));
                 _deviceAssignment->SetDriverType(driverType);
             }
         }
