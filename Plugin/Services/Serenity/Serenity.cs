@@ -3,10 +3,6 @@ using PluginNs.Services.Host;
 using PluginNs.Services.Logging;
 using PluginNs.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PluginNs.Services.Serenity
 {
@@ -26,10 +22,7 @@ namespace PluginNs.Services.Serenity
 
         private void Init()
         {
-            var retVal = VxGlobal.InitializeSdk(Const.VxSdkKey);
-            if (retVal != Results.Value.OK)
-                _logger.LogThenThrow(new Exception($"Unable to init the VxSdk. {retVal}"));
-            retVal = VxGlobal.SetLogLevel(Const.VxSdkLogLevel);
+            var retVal = VxGlobal.SetLogLevel(Const.VxSdkLogLevel);
             if (retVal != Results.Value.OK)
                 _logger.LogThenThrow(new Exception($"Unable to set VxSdk log level. {retVal}"));
             retVal = VxGlobal.SetLogPath(Const.VxSdkLogFilePath);
