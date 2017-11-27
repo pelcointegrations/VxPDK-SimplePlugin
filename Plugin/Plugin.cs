@@ -1,18 +1,14 @@
-﻿using Pelco.Phoenix.PluginHostInterfaces;
+﻿using Microsoft.Practices.Unity;
+using Pelco.Phoenix.PluginHostInterfaces;
+using PluginNs.Events;
 using PluginNs.Models;
+using PluginNs.Services.Host;
 using PluginNs.Utilities;
+using PluginNs.Views;
 using Prism.Events;
 using System;
-using Microsoft.Practices.Unity;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using PluginNs.Events;
-using PluginNs.Views;
-using PluginNs.Services.Host;
 
 namespace PluginNs
 {
@@ -37,7 +33,7 @@ namespace PluginNs
                 Utils.Instance.SetCacheItem(Const.PersistentModel, new PersistentModel());
                 _pluginHost = _bootstrapper.Container.Resolve<IPluginHost>();
                 _aggregator = _bootstrapper.Container.Resolve<IEventAggregator>();
-                _aggregator.GetEvent<ShutdownCompleted>().Subscribe(Utils.Instance.UiAction<object>(_ => OnShutdownCompleted()));
+                _aggregator.GetEvent<ShutdownCompleted>().Subscribe(_ => OnShutdownCompleted(), ThreadOption.UIThread, true);
                 _pluginHost.DockRight();
             }
         }

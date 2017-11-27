@@ -3,9 +3,7 @@ using PluginNs.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Threading;
 using System.Xml.Serialization;
@@ -31,27 +29,20 @@ namespace PluginNs.Utilities
         public bool IsPlugin { get; set; }
         public IHost OCCHost { get; set; }
         public Dispatcher MainDispatcher { get; set; }
-        private Dictionary<string, object> _cache = new Dictionary<string, object>();
-        private List<object> _uiActionItems = new List<object>();
+
+        private Dictionary<string, object> _cache;
 
         private Utils()
-        { }
+        {
+            _cache = new Dictionary<string, object>();
+        }
 
         public void RunOnUi(Action action)
         {
-            MainDispatcher.BeginInvoke(action);
-        }
-
-        // This list is simply to keep the wrapper actions from disposing
-        // prism only holds as weak references
-        public Action<T> UiAction<T>(Action<T> action)
-        {
-            var newAction = new Action<T>(val => {
-                T newVal = (T)val;
-                MainDispatcher.BeginInvoke(action, new object[] { newVal });
-            });
-            _uiActionItems.Add(newAction);
-            return newAction;
+            if (MainDispatcher != null)
+                MainDispatcher.BeginInvoke(action);
+            else
+                Dispatcher.CurrentDispatcher.BeginInvoke(action);
         }
 
         public void SetCacheItem<T>(string key, T obj)

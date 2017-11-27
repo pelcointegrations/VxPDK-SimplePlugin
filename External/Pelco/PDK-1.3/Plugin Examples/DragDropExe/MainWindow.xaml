@@ -1,7 +1,0 @@
-﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:DragDropPlugin" x:Class="DragDropPlugin.MainWindow"
-        Title="MainWindow">
-	<local:MainUserControl x:Name="MainControl"/>
-</Window>

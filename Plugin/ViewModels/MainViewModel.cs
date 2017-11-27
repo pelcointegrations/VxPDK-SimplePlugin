@@ -3,11 +3,7 @@ using PluginNs.Utilities;
 using PluginNs.Views;
 using Prism.Commands;
 using Prism.Events;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PluginNs.ViewModels
 {
@@ -20,7 +16,7 @@ namespace PluginNs.ViewModels
         {
             SettingsCmd = new DelegateCommand(OnSettings);
             CloseCmd = new DelegateCommand(OnClose);
-            aggregator.GetEvent<ShutdownStarted>().Subscribe(Utils.Instance.UiAction<object>(_ => OnShutdownStarted()));
+            aggregator.GetEvent<ShutdownStarted>().Subscribe(_ => OnShutdownStarted(), ThreadOption.UIThread, true);
 
             Utils.Instance.RunOnUi(() => { Logger.Log("Starting plug-in"); OnSettings(); });
         }

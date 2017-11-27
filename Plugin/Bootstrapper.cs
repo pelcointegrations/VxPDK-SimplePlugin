@@ -1,21 +1,16 @@
-﻿using PluginNs.Utilities;
+﻿using Microsoft.Practices.Unity;
+using PluginNs.Behaviors;
+using PluginNs.Services.Host;
+using PluginNs.Services.Logging;
+using PluginNs.Services.Serenity;
+using PluginNs.Utilities;
 using PluginNs.Views;
+using Prism.Logging;
 using Prism.Regions;
 using Prism.Unity;
 using System;
-using System.Collections.Generic;
-using Microsoft.Practices.Unity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using PluginNs.Behaviors;
-using Prism.Logging;
-using PluginNs.Services.Logging;
 using System.IO;
-using System.Reflection;
-using PluginNs.Services.Serenity;
-using PluginNs.Services.Host;
+using System.Windows;
 
 namespace PluginNs
 {
