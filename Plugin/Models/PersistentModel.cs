@@ -1,15 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using Newtonsoft.Json;
+using Prism.Mvvm;
+using System;
 
 namespace PluginNs.Models
 {
-    [Serializable]
-    public class PersistentModel : INotifyPropertyChanged
+    [JsonObject(MemberSerialization.OptIn)]
+    public class PersistentModel : BindableBase
     {
         private const int MinPluginWidth = 200;
         private const int MaxPluginWidth = 500;
-        public event PropertyChangedEventHandler PropertyChanged;
         private int _pluginWidth;
 
         public PersistentModel()
@@ -17,9 +16,10 @@ namespace PluginNs.Models
             PluginWidth = 300;
         }
 
+        [JsonProperty]
         public int PluginWidth
         {
-            get { return _pluginWidth; }
+            get => _pluginWidth;
             set
             {
                 int val = value;
@@ -27,12 +27,6 @@ namespace PluginNs.Models
                 val = Math.Max(MinPluginWidth, val);
                 SetProperty(ref _pluginWidth, val);
             }
-        }
-
-        private void SetProperty<T>(ref T member, T value, [CallerMemberName] string name = "")
-        {
-            member = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

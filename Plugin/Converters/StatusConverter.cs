@@ -10,7 +10,7 @@ namespace PluginNs.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var brush = new SolidColorBrush(Colors.Yellow);
-            if(value == null) return brush;
+            if (value == null) return brush;
 
             bool val = (bool)value;
             brush = val ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Red);

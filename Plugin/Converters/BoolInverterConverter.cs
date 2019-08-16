@@ -30,7 +30,7 @@ namespace PluginNs.Converters
                     bool input = !(bool)value;
                     return converter.Convert(input, targetType, null, culture);
                 }
-                else if(value == null)
+                else if (value == null)
                 {
                     object input = new object();
                     return converter.Convert(input, targetType, null, culture);

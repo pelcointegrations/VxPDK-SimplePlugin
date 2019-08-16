@@ -1,75 +1,50 @@
-﻿using Microsoft.Practices.Unity;
+﻿using NLog;
 using PluginNs.Behaviors;
-using PluginNs.Services.Host;
-using PluginNs.Services.Logging;
-using PluginNs.Services.Serenity;
-using PluginNs.Utilities;
+using PluginNs.Services.PluginHost;
+using PluginNs.Services.VxSdk;
 using PluginNs.Views;
-using Prism.Logging;
+using Prism.Ioc;
 using Prism.Regions;
 using Prism.Unity;
 using System;
-using System.IO;
 using System.Windows;
+using Unity;
 
 namespace PluginNs
 {
     class Bootstrapper : UnityBootstrapper
     {
-        private ILogger _logger;
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
+        public bool HasRun => Container != null;
+
+        private bool _isPlugin;
 
         public Bootstrapper(bool isPlugin = false)
         {
-            Utils.Instance.IsPlugin = isPlugin;
+            _isPlugin = isPlugin;
         }
 
-        public bool HasRun
+        public new void Run()
         {
-            get
-            {
-                return Container != null;
-            }
-        }
-
-        protected override ILoggerFacade CreateLogger()
-        {
-            TextWriter textWriter = null;
-            if (!System.Diagnostics.Debugger.IsAttached)
-            {
-                var fs = File.Open(Const.LogFilePath, FileMode.Append, FileAccess.Write, FileShare.Write);
-                var streamWriter = new StreamWriter(fs);
-                streamWriter.AutoFlush = true;
-                textWriter = streamWriter;
-            }
-            else
-            {
-                textWriter = new TraceWriter();
-            }
-            _logger = new Logger(textWriter);
-            return _logger;
+            if (!HasRun)
+                base.Run();
         }
 
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
 
-            Container.RegisterInstance<ILogger>(_logger);
-            Container.RegisterType<ISerenity, Serenity>(new ContainerControlledLifetimeManager());
+            Container.RegisterSingleton<IVxSdkSvc, VxSdkSvc>();
 
-            if (!System.Diagnostics.Debugger.IsAttached)
-            {
-                Container.RegisterType<IPluginHost, PluginHost>(new ContainerControlledLifetimeManager());
-            }
+            if (_isPlugin)
+                Container.RegisterSingleton<IPluginHostSvc, PluginHostSvc>();
             else
-            {
-                Container.RegisterType<IPluginHost, PluginHostMock>(new ContainerControlledLifetimeManager());
-            }
+                Container.RegisterSingleton<IPluginHostSvc, PluginHostSvcMock>();
 
-            Container.RegisterType<object, MainView>(nameof(MainView));
-            Container.RegisterType<object, DefaultView>(nameof(DefaultView));
-            Container.RegisterType<object, SettingsView>(nameof(SettingsView));
-
-            Utils.Instance.SetCacheItem(Const.ILogger, _logger);
+            Container.RegisterTypeForNavigation<MainView>(nameof(MainView));
+            Container.RegisterTypeForNavigation<DefaultView>(nameof(DefaultView));
+            Container.RegisterTypeForNavigation<SettingsView>(nameof(SettingsView));
         }
 
         protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
@@ -82,7 +57,7 @@ namespace PluginNs
         protected override DependencyObject CreateShell()
         {
             DependencyObject shell = null;
-            if (Utils.Instance.IsPlugin)
+            if (_isPlugin)
                 LoadResources();
             else
                 shell = Container.Resolve<MainWindow>();

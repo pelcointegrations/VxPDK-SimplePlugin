@@ -1,4 +1,4 @@
-﻿using PluginNs.Services.Serenity;
+﻿using PluginNs.Services.VxSdk;
 using PluginNs.Utilities;
 
 namespace PluginNs.ViewModels
@@ -7,7 +7,7 @@ namespace PluginNs.ViewModels
     {
         private string _user;
 
-        public SettingsViewModel(ISerenity serenity)
+        public SettingsViewModel(IVxSdkSvc serenity)
         {
             var ser = serenity;
             User = ser.GetUser();
@@ -15,13 +15,13 @@ namespace PluginNs.ViewModels
 
         public string User
         {
-            get { return _user; }
-            set { SetProperty(ref _user, value); }
+            get => _user;
+            set => SetProperty(ref _user, value);
         }
 
         private void SaveSettings()
         {
-            string settingsData = Utils.Instance.Serialize(Settings);
+            string settingsData = Utils.I.Serialize(Settings);
             PluginHost.StoreCredentials(settingsData);
         }
 

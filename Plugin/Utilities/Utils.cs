@@ -1,20 +1,19 @@
-﻿using Pelco.Phoenix.PluginHostInterfaces;
-using PluginNs.Services.Logging;
+﻿using Newtonsoft.Json;
+using NLog;
+using Pelco.Phoenix.PluginHostInterfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Web.Script.Serialization;
+using System.Reflection;
 using System.Windows.Threading;
-using System.Xml.Serialization;
 
 namespace PluginNs.Utilities
 {
     class Utils
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private static Utils _instance = null;
 
-        public static Utils Instance
+        public static Utils I
         {
             get
             {
@@ -23,18 +22,30 @@ namespace PluginNs.Utilities
                 return _instance;
             }
         }
-
-        /////////////////////////////////////////////////////////////
-
-        public bool IsPlugin { get; set; }
-        public IHost OCCHost { get; set; }
         public Dispatcher MainDispatcher { get; set; }
+
+        public IHost OCCHost { get; set; }
 
         private Dictionary<string, object> _cache;
 
         private Utils()
         {
             _cache = new Dictionary<string, object>();
+        }
+
+        public Assembly CurrentAssembly()
+        {
+            return Assembly.GetExecutingAssembly();
+        }
+
+        public bool IsConfigSet()
+        {
+            bool success = !string.IsNullOrWhiteSpace(Const.PluginId);
+            success = success && !string.IsNullOrWhiteSpace(Const.PluginKey);
+            success = success && !string.IsNullOrWhiteSpace(Const.SdkLicense);
+            success = success && !string.IsNullOrWhiteSpace(Const.MockBaseUri);
+            success = success && !string.IsNullOrWhiteSpace(Const.MockAuthToken);
+            return success;
         }
 
         public void RunOnUi(Action action)
@@ -63,17 +74,11 @@ namespace PluginNs.Utilities
             string serialized = string.Empty;
             try
             {
-                var serializer = new XmlSerializer(typeof(T));
-                using (var writer = new StringWriter())
-                {
-                    serializer.Serialize(writer, obj);
-                    string data = writer.ToString();
-                    serialized = Convert.ToBase64String(Encoding.UTF8.GetBytes(data));
-                }
+                serialized = JsonConvert.SerializeObject(obj);
             }
             catch (Exception e)
             {
-                GetCacheItem<ILogger>(Const.ILogger)?.Log("Threw while serializing", e);
+                Log.Warn(e, "Threw while serializing");
             }
             return serialized;
         }
@@ -83,57 +88,13 @@ namespace PluginNs.Utilities
             T deserialized = default(T);
             try
             {
-                var serializer = new XmlSerializer(typeof(T));
-                serialized = Encoding.UTF8.GetString(Convert.FromBase64String(serialized));
-                using (var reader = new StringReader(serialized))
-                {
-                    deserialized = serializer.Deserialize(reader) as T;
-                }
+                deserialized = JsonConvert.DeserializeObject<T>(serialized);
             }
             catch (Exception e)
             {
-                GetCacheItem<ILogger>(Const.ILogger)?.Log("Threw while deserializing", e);
+                Log.Warn(e, "Threw while deserializing");
             }
             return deserialized;
-        }
-
-        public T DeserializeJson<T>(string serialized) where T : class
-        {
-            T deserialized = default(T);
-            try
-            {
-                var js = new JavaScriptSerializer();
-                deserialized = js.Deserialize<T>(serialized);
-            }
-            catch (Exception e)
-            {
-                GetCacheItem<ILogger>(Const.ILogger)?.Log("Threw while deserializing json", e);
-            }
-            return deserialized;
-        }
-
-        public string ToRfc3339(DateTime time)
-        {
-            string strTime = string.Empty;
-            try
-            {
-                return time.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fff'Z'");
-            }
-            catch (Exception e)
-            {
-                GetCacheItem<ILogger>(Const.ILogger)?.Log("Threw while converting time to RFC3339", e);
-            }
-            return strTime;
-        }
-
-        public string CurrentVersion
-        {
-            get
-            {
-                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-                var version = System.Reflection.AssemblyName.GetAssemblyName(assembly.Location).Version.ToSt‌​ring();
-                return version;
-            }
         }
     }
 }

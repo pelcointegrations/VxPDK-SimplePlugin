@@ -9,9 +9,9 @@ namespace PluginNs.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             bool visible = true;
-            foreach(var value in values)
+            foreach (var value in values)
             {
-                if(value is bool)
+                if (value is bool)
                     visible = visible && (bool)value;
             }
             return visible ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;

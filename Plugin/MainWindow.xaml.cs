@@ -1,7 +1,7 @@
-﻿using Microsoft.Practices.Unity;
-using PluginNs.Views;
+﻿using PluginNs.Views;
 using Prism.Regions;
 using System.Windows;
+using Unity;
 
 namespace PluginNs
 {

@@ -1,25 +1,18 @@
-﻿using Microsoft.Practices.Unity;
-using PluginNs.Models;
-using PluginNs.Services.Host;
-using PluginNs.Services.Logging;
+﻿using PluginNs.Models;
+using PluginNs.Services.PluginHost;
 using PluginNs.Utilities;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
+using Unity;
 
 namespace PluginNs.ViewModels
 {
     class BaseViewModel : BindableBase, INavigationAware, IDisposable
     {
         [Dependency]
-        public IUnityContainer Container { get; set; }
-
-        [Dependency]
-        public IPluginHost PluginHost { get; set; }
-
-        [Dependency]
-        public ILogger Logger { get; set; }
+        public IPluginHostSvc PluginHost { get; set; }
 
         [Dependency]
         public IRegionManager RegionMgr { get; set; }
@@ -27,11 +20,11 @@ namespace PluginNs.ViewModels
         [Dependency]
         public IEventAggregator Aggregator { get; set; }
 
-        public PersistentModel Settings { get; set; }
+        public PersistentModel Settings { get; }
 
         public BaseViewModel()
         {
-            Settings = Utils.Instance.GetCacheItem<PersistentModel>(Const.PersistentModel);
+            Settings = Utils.I.GetCacheItem<PersistentModel>(nameof(PersistentModel));
         }
 
         public virtual bool IsNavigationTarget(NavigationContext navigationContext)

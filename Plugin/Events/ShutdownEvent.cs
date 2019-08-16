@@ -2,9 +2,9 @@
 
 namespace PluginNs.Events
 {
-    class ShutdownStarted : PubSubEvent<object>
+    class ShutdownStarted : PubSubEvent
     { }
 
-    class ShutdownCompleted : PubSubEvent<object>
+    class ShutdownCompleted : PubSubEvent
     { }
 }

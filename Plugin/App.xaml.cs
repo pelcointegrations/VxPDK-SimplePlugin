@@ -1,5 +1,7 @@
-﻿using PluginNs.Models;
+﻿using NLog;
+using PluginNs.Models;
 using PluginNs.Utilities;
+using System;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -10,13 +12,25 @@ namespace PluginNs
     /// </summary>
     public partial class App : Application
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Utils.Instance.MainDispatcher = Dispatcher.CurrentDispatcher;
+
+            if (!Utils.I.IsConfigSet())
+            {
+                var ex = new Exception("You must first setup the values in Utilities/Const.cs");
+                Log.Error(ex);
+                throw ex;
+            }
+
+            Utils.I.MainDispatcher = Dispatcher.CurrentDispatcher;
+
             var bootstrapper = new Bootstrapper();
             bootstrapper.Run();
-            Utils.Instance.SetCacheItem(Const.PersistentModel, new PersistentModel());
+
+            Utils.I.SetCacheItem(nameof(PersistentModel), new PersistentModel());
         }
     }
 }
