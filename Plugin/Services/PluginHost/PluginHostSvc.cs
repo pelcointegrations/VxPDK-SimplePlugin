@@ -22,6 +22,7 @@ namespace PluginNs.Services.PluginHost
             _hostSerenity = Utils.I.OCCHost?.GetService<IOCCHostSerenity>();
 
             _playback?.RegisterForVideoPlaybackNotifications(true);
+            _overlay?.RegisterForVideoCellNotifications(true);
 
             _pluginWidth = 300;
         }

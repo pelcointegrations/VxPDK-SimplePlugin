@@ -17,7 +17,7 @@ using Unity;
 
 namespace PluginNs
 {
-    class Plugin : PluginBase, IOCCPluginGeneral, IOCCPluginPlaybackNotifications
+    class Plugin : PluginBase, IOCCPluginGeneral, IOCCPluginPlaybackNotifications, IOCCPluginOverlay
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -241,6 +241,16 @@ namespace PluginNs
             if (initiationTime.HasValue)
                 Log.Info($"initiationTime: {initiationTime.Value.ToLocalTime()}");
             Log.Info($"speed: {speed}");
+        }
+
+        public void OnVideoPlayPause(string dataSourceId, string number, bool live, bool playing, DateTime utcTime)
+        {
+            Log.Info("OnVideoPlayPause");
+        }
+
+        public void OnVideoTimer(DateTime utcTime)
+        {
+            Log.Info($"OnVideoTimer {utcTime.ToLocalTime()}");
         }
     }
 }
