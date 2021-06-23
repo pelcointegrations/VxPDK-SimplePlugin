@@ -12,7 +12,7 @@ using Unity;
 
 namespace PluginNs
 {
-    class Bootstrapper : UnityBootstrapper
+    class Bootstrapper : PrismBootstrapper
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
@@ -23,6 +23,7 @@ namespace PluginNs
         public Bootstrapper(bool isPlugin = false)
         {
             _isPlugin = isPlugin;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
         }
 
         public new void Run()
@@ -31,45 +32,41 @@ namespace PluginNs
                 base.Run();
         }
 
-        protected override void ConfigureContainer()
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            base.ConfigureContainer();
-
-            Container.RegisterSingleton<IVxSdkSvc, VxSdkSvc>();
+            containerRegistry.RegisterSingleton<IVxSdkSvc, VxSdkSvc>();
 
             if (_isPlugin)
-                Container.RegisterSingleton<IPluginHostSvc, PluginHostSvc>();
+                containerRegistry.RegisterSingleton<IPluginHostSvc, PluginHostSvc>();
             else
-                Container.RegisterSingleton<IPluginHostSvc, PluginHostSvcMock>();
+                containerRegistry.RegisterSingleton<IPluginHostSvc, PluginHostSvcMock>();
 
-            Container.RegisterTypeForNavigation<MainView>(nameof(MainView));
-            Container.RegisterTypeForNavigation<DefaultView>(nameof(DefaultView));
-            Container.RegisterTypeForNavigation<SettingsView>(nameof(SettingsView));
-        }
-
-        protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
-        {
-            var factory = base.ConfigureDefaultRegionBehaviors();
-            factory.AddIfMissing(nameof(DisposeRemovedViews), typeof(DisposeRemovedViews));
-            return factory;
+            containerRegistry.RegisterForNavigation<MainView>(nameof(MainView));
+            containerRegistry.RegisterForNavigation<DefaultView>(nameof(DefaultView));
+            containerRegistry.RegisterForNavigation<SettingsView>(nameof(SettingsView));
         }
 
         protected override DependencyObject CreateShell()
         {
             DependencyObject shell = null;
-            if (_isPlugin)
-                LoadResources();
-            else
+            LoadResources();
+            if (!_isPlugin)
                 shell = Container.Resolve<MainWindow>();
             return shell;
         }
 
         // Gets called if CreateShell returns a non null object
-        protected override void InitializeShell()
+        protected override void InitializeShell(DependencyObject shell)
         {
-            base.InitializeShell();
-            App.Current.MainWindow = (Window)Shell;
+            base.InitializeShell(shell);
+            App.Current.MainWindow = (Window)shell;
             App.Current.MainWindow.Show();
+        }
+
+        protected override void ConfigureDefaultRegionBehaviors(IRegionBehaviorFactory regionBehaviors)
+        {
+            base.ConfigureDefaultRegionBehaviors(regionBehaviors);
+            regionBehaviors.AddIfMissing(nameof(DisposeRemovedViews), typeof(DisposeRemovedViews));
         }
 
         // This is required instead of using App.xaml because when loaded as a plug-in
@@ -92,6 +89,20 @@ namespace PluginNs
                 resource.Source = new Uri(resourceDict, UriKind.Relative);
                 App.Current.Resources.MergedDictionaries.Add(resource);
             }
+        }
+
+        private void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception ee)
+                Log.Error(ee, $"Threw an unhandled exception! - Message - {ee.Message}");
+            else if (e.ExceptionObject is string es)
+                Log.Error($"Threw an unhandled exception! - String - {es}");
+            else if (e.ExceptionObject != null)
+                Log.Error($"Threw an unhandled exception! - Type - {e.ExceptionObject.GetType()}");
+            else if (sender != null)
+                Log.Error($"Threw an unhandled exception - Sender - {sender.GetType()}");
+            else
+                Log.Error("Threw an unhandled exception! - No more info available.");
         }
     }
 }

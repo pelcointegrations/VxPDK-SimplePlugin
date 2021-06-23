@@ -1,5 +1,4 @@
-﻿using CommonServiceLocator;
-using NLog;
+﻿using NLog;
 using Pelco.Phoenix.PluginHostInterfaces;
 using PluginNs.Events;
 using PluginNs.Models;
@@ -23,9 +22,9 @@ namespace PluginNs
 
         private Bootstrapper _bootstrapper = new Bootstrapper(true);
 
-        private IPluginHostSvc PluginHost => ServiceLocator.Current.GetInstance<IPluginHostSvc>();
+        private IPluginHostSvc PluginHost => ContainerLocator.Container.Resolve<IPluginHostSvc>();
 
-        private IEventAggregator Aggregator => ServiceLocator.Current.GetInstance<IEventAggregator>();
+        private IEventAggregator Aggregator => ContainerLocator.Container.Resolve<IEventAggregator>();
 
         /// <summary>
         /// Plugin version to report to OpsCenter
