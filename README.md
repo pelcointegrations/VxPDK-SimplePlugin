@@ -2,8 +2,8 @@
 A simple plug-in sample for VideoXpert
 
 # Requirements
-* VS2015
-* .NET 4.6.2
+* VS2019
+* .NET 4.7.2
 
 # Tech Notes
 Modify "Plugin\Utilities\Const.cs" and update the string values
